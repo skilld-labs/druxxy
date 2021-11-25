@@ -34,7 +34,6 @@ dependencies:
   - gin_toolbar
   - google_tag
   - help
-  - honeypot
   - image
   - imagemagick
   - language
