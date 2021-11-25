@@ -16,7 +16,6 @@ dependencies:
   - config_override_warn
   - config_translation
   - content_translation
-  - contextual
   - crop
   - custom_pub
   - datetime
