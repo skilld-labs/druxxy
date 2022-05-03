@@ -41,6 +41,7 @@
     "drupal/paragraphs": "^1.11",
     "drupal/password_policy": "^3.0",
     "drupal/pathauto": "^1.8",
+    "drupal/private_files_download_permission": "^3.0",
     "drupal/rabbit_hole": "^1.0.0-beta7",
     "drupal/redirect": "^1.6",
     "drupal/remove_http_headers": "^1.0",
