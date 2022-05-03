@@ -70,6 +70,7 @@ dependencies:
   - path
   - path_alias
   - pathauto
+  - pfdp
   - quickedit
   - rabbit_hole
   - rdf
