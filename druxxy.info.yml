@@ -115,4 +115,4 @@ themes:
 
 keep_english: true
 'interface translation project': druxxy
-'interface translation server pattern': 'profiles/druxxy/%language.po'
+'interface translation server pattern': 'profiles/contrib/druxxy/%language.po'
