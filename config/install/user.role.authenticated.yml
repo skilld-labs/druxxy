@@ -1,6 +1,8 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - pfdp
 id: authenticated
 label: 'Authenticated user'
 weight: 1
@@ -9,3 +11,5 @@ permissions:
   - 'access content'
   - 'access shortcuts'
   - 'view media'
+  - 'bypass pfdp'
+  - 'bypass pfdp for temporary files'
