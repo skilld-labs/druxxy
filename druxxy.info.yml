@@ -47,7 +47,6 @@ dependencies:
   - lb_ux
   - link
   - locale
-  - mailsystem
   - manage_display
   - media
   - media_library
@@ -89,7 +88,7 @@ dependencies:
   - sophron_guesser
   - svg_image
   - svg_image_responsive
-  - swiftmailer
+  - symfony_mailer
   - system
   - taxonomy
   - telephone
