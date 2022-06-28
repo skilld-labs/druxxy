@@ -85,7 +85,7 @@
       "drupal/core": {
         "Translated field denormalization creates duplicate values": "https://www.drupal.org/files/issues/2019-07-02/2904423-core_8_8-72.patch",
         "Fix multilingual site's layout edit context issue": "https://www.drupal.org/files/issues/2019-12-19/3101231-19.patch",
-        "SQLite database locking errors cause fatal errors": "https://www.drupal.org/files/issues/1120020-59.patch",
+        "SQLite database locking errors cause fatal errors": "https://www.drupal.org/files/issues/2022-06-28/1120020-103.patch",
         "Error: Call to a member function getLabel() after enabling layout_builder": "https://www.drupal.org/files/issues/2019-11-14/2985882-entityfield-43.patch",
         "POST /quickedit/metadata returning HTTP 503": "https://www.drupal.org/files/issues/2021-06-07/2893407-47.patch",
         "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2021-12-09/3008924-rerolled-24.patch",
