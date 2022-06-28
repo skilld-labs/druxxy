@@ -90,7 +90,7 @@
         "POST /quickedit/metadata returning HTTP 503": "https://www.drupal.org/files/issues/2021-06-07/2893407-47.patch",
         "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2021-12-09/3008924-rerolled-24.patch",
         "Claro + layout builder messages display additional icon in top left corner": "https://www.drupal.org/files/issues/2020-05-28/claro_layout_builder_extra_icon-3143237-4.patch",
-        "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2022-01-27/2942975-core-3-x_180.patch",
+        "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2022-05-03/2942975-core-3-x_190.patch",
         "Taxonomy pages crash with layout_builder enabled": "https://www.drupal.org/files/issues/2018-09-19/2959132-taxo-17-PASS.patch",
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
       },
