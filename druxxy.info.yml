@@ -70,9 +70,7 @@ dependencies:
   - path_alias
   - pathauto
   - pfdp
-  - quickedit
   - rabbit_hole
-  - rdf
   - redirect
   - redirect_404
   - remove_http_headers
