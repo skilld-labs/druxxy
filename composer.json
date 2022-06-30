@@ -24,7 +24,7 @@
     "drupal/custom_pub": "^1.0@beta",
     "drupal/file_entity": "2.x-dev",
     "drupal/focal_point": "^1.4",
-    "drupal/formblock": "^2.0@beta",
+    "drupal/formblock": "^2",
     "drupal/gin": "^3.0@alpha",
     "drupal/gin_login": "^1.0@RC",
     "drupal/google_tag": "^1.2",
@@ -106,6 +106,10 @@
       },
       "drupal/focal_point": {
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
+      },
+      "drupal/formblock": {
+        "Missing config schema for blocks": "https://www.drupal.org/files/issues/2019-08-07/missing_config_schema_blocks-3073274-2816415-3.patch",
+        "User edit form": "https://www.drupal.org/files/issues/2021-01-19/2915442-3-user_edit_form.patch"
       },
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
