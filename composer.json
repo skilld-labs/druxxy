@@ -94,7 +94,7 @@
         "Fix multilingual site's layout edit context issue": "https://www.drupal.org/files/issues/2019-12-19/3101231-19.patch",
         "Error: Call to a member function getLabel() after enabling layout_builder": "https://www.drupal.org/files/issues/2019-11-14/2985882-entityfield-43.patch",
         "POST /quickedit/metadata returning HTTP 503": "https://www.drupal.org/files/issues/2021-06-07/2893407-47.patch",
-        "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2021-12-09/3008924-rerolled-24.patch",
+        "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2022-07-11/3008924-33.patch",
         "Claro + layout builder messages display additional icon in top left corner": "https://www.drupal.org/files/issues/2020-05-28/claro_layout_builder_extra_icon-3143237-4.patch",
         "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2022-06-24/2942975-199.patch",
         "Taxonomy pages crash with layout_builder enabled": "https://www.drupal.org/files/issues/2018-09-19/2959132-taxo-17-PASS.patch",
