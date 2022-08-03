@@ -109,8 +109,9 @@
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
       },
       "drupal/formblock": {
-        "Missing config schema for blocks": "https://www.drupal.org/files/issues/2019-08-07/missing_config_schema_blocks-3073274-2816415-3.patch",
-        "User edit form": "https://www.drupal.org/files/issues/2021-01-19/2915442-3-user_edit_form.patch"
+        "Feature: Node edit form block": "https://www.drupal.org/files/issues/2020-12-07/formblock-node_edit_form-3090910-5.patch",
+        "Missing config schema for blocks": "https://www.drupal.org/files/issues/2020-12-30/missing_config_schema_blocks-3073274-2816415-3090910-4.patch",
+        "User edit form": "https://www.drupal.org/files/issues/2021-01-20/2915442-5.patch"
       },
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
