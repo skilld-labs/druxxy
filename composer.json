@@ -111,7 +111,7 @@
       "drupal/formblock": {
         "Feature: Node edit form block": "https://www.drupal.org/files/issues/2020-12-07/formblock-node_edit_form-3090910-5.patch",
         "Missing config schema for blocks": "https://www.drupal.org/files/issues/2020-12-30/missing_config_schema_blocks-3073274-2816415-3090910-4.patch",
-        "User edit form": "https://git.drupalcode.org/issue/formblock-2915442/-/merge_requests/1/diffs.patch?commit_id=7cc09821cf69abeb2e0bb9dbe5cb21b8eba69ecc"
+        "User edit form": "https://www.drupal.org/files/issues/2021-01-19/2915442-3-user_edit_form.patch"
       },
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
