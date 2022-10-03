@@ -32,7 +32,6 @@ dependencies:
   - filter
   - focal_point
   - formblock
-  - gin_login
   - gin_toolbar
   - google_tag
   - help
