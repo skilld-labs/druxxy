@@ -44,7 +44,7 @@
     "drupal/private_files_download_permission": "^3.1",
     "drupal/rabbit_hole": "^1.0.0-beta7",
     "drupal/redirect": "^1.6",
-    "drupal/remove_http_headers": "^1.0",
+    "drupal/remove_http_headers": "^1.0 || ^2.0",
     "drupal/role_delegation": "^1.1",
     "drupal/seckit": "^2.0",
     "drupal/svg_image": "^3.0",
@@ -90,7 +90,6 @@
     "patches": {
       "drupal/core": {
         "Fix multilingual site's layout edit context issue": "https://www.drupal.org/files/issues/2019-12-19/3101231-19.patch",
-        "POST /quickedit/metadata returning HTTP 503": "https://www.drupal.org/files/issues/2021-06-07/2893407-47.patch",
         "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2022-12-15/3008924-42.patch",
         "Claro + layout builder messages display additional icon in top left corner": "https://www.drupal.org/files/issues/2022-12-15/3143237-74.patch",
         "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2023-02-08/2942975-230.patch",
@@ -100,6 +99,9 @@
       },
       "drupal/block_content_permissions": {
         "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch"
+      },
+      "drupal/ctools": {
+        "PHP 8.2 warnings": "https://www.drupal.org/files/issues/2023-04-17/3332913-6-php-8.1.patch"
       },
       "drupal/focal_point": {
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
@@ -112,6 +114,7 @@
         "Profile block config schema": "https://www.drupal.org/files/issues/2023-01-18/missing_config_schema_blocks-3073274-3323373.patch"
       },
       "drupal/lb_ux": {
+        "D10 and PHP 8.2": "https://git.drupalcode.org/project/lb_ux/-/merge_requests/2.diff",
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
         "Errors when using with modules that alter a section's contextual menu": "https://www.drupal.org/files/issues/2020-05-22/3106939-4.patch"
       },
