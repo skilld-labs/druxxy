@@ -3,12 +3,14 @@ langcode: en
 status: true
 dependencies: {  }
 _core:
-  default_config_hash: YdbP1K1t12OGgnPz3AsvZ6xoXuFbWSuy3npzg1pVSJI
+  default_config_hash: F08QOwhqMxKrs25pdEUoqkyGyejTnGUrK4S5sTjM8-c
 id: _
 configuration:
   mailer_default_headers: {  }
-  mailer_url_to_absolute: {  }
-  mailer_html_to_text: {  }
   mailer_inline_css: {  }
   email_theme:
     theme: _active_fallback
+  mailer_url_to_absolute: {  }
+  mailer_wrap_and_convert:
+    plain: false
+    swiftmailer: false
