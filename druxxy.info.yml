@@ -44,7 +44,6 @@ dependencies:
   - layout_discovery
   - layout_library
   - layout_paragraphs
-  - lb_ux
   - link
   - locale
   - manage_display
