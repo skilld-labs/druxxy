@@ -99,9 +99,6 @@
       "drupal/block_content_permissions": {
         "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch"
       },
-      "drupal/ctools": {
-        "PHP 8.2 warnings": "https://www.drupal.org/files/issues/2023-04-17/3332913-6-php-8.1.patch"
-      },
       "drupal/focal_point": {
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
       },
