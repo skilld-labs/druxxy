@@ -108,7 +108,6 @@ dependencies:
 themes:
   - claro
   - gin
-  - seven
 
 keep_english: true
 'interface translation project': druxxy
