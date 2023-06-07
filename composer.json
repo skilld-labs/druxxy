@@ -30,6 +30,7 @@
     "drupal/layout_builder_restrictions": "^2.7",
     "drupal/layout_library": "^1.0@beta",
     "drupal/layout_paragraphs": "^2.0",
+    "drupal/lb_ux": "1.x@dev",
     "drupal/manage_display": "^2.0@beta",
     "drupal/menu_admin_per_menu": "^1.1",
     "drupal/menu_link_attributes": "^1.1",
@@ -108,7 +109,6 @@
         "Profile block config schema": "https://www.drupal.org/files/issues/2023-01-18/missing_config_schema_blocks-3073274-3323373.patch"
       },
       "drupal/lb_ux": {
-        "D10 and PHP 8.2": "https://git.drupalcode.org/project/lb_ux/-/merge_requests/2.diff",
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
         "Errors when using with modules that alter a section's contextual menu": "https://www.drupal.org/files/issues/2020-05-22/3106939-4.patch"
       },
