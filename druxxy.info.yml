@@ -1,7 +1,7 @@
 name: Druxxy
 type: profile
 description: 'Skilld Drupal installation profile'
-core_version_requirement: ^8 || ^9 || ^10
+core_version_requirement: ^10
 
 dependencies:
   - automated_cron
