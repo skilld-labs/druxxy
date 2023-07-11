@@ -92,8 +92,10 @@
         "Claro + layout builder messages display additional icon in top left corner": "https://www.drupal.org/files/issues/2022-12-15/3143237-74.patch",
         "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2023-02-08/2942975-230.patch",
         "Taxonomy pages crash with layout_builder enabled": "https://www.drupal.org/files/issues/2018-09-19/2959132-taxo-17-PASS.patch",
-        "Allow field blocks to display the configuration label when set in Layout Builder": "https://www.drupal.org/files/issues/2021-08-17/3039185-46.patch",
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
+      },
+      "drupal/block_content_permissions": {
+	"Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch"
       },
       "drupal/focal_point": {
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
