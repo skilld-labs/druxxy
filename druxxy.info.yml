@@ -39,7 +39,6 @@ dependencies:
   - imagemagick
   - language
   - layout_discovery
-  - layout_library
   - layout_paragraphs
   - link
   - locale

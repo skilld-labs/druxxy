@@ -92,7 +92,6 @@
         "Claro + layout builder messages display additional icon in top left corner": "https://www.drupal.org/files/issues/2022-12-15/3143237-74.patch",
         "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2023-02-08/2942975-230.patch",
         "Taxonomy pages crash with layout_builder enabled": "https://www.drupal.org/files/issues/2018-09-19/2959132-taxo-17-PASS.patch",
-        "Allow field blocks to display the configuration label when set in Layout Builder": "https://www.drupal.org/files/issues/2021-08-17/3039185-46.patch",
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
       },
       "drupal/block_content_permissions": {
@@ -114,6 +113,9 @@
       },
       "drupal/menu_link_attributes": {
         "Add missing schema for menu_link_attributes": "https://patch-diff.githubusercontent.com/raw/yannickoo/menu_link_attributes/pull/52.patch"
+      },
+      "drupal/userprotect": {
+        "Error: Call to a member function grantPermission() on null in userprotect_install()": "https://www.drupal.org/files/issues/2023-07-28/3349663-8.patch"
       },
       "drupal/gin": {
         "Missing config schema": "https://www.drupal.org/files/issues/2022-05-09/missing_config_schema_3279472.patch"
