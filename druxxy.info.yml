@@ -38,9 +38,6 @@ dependencies:
   - image
   - imagemagick
   - language
-  - layout_builder
-  - layout_builder_modal
-  - layout_builder_restrictions
   - layout_discovery
   - layout_library
   - layout_paragraphs
