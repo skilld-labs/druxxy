@@ -119,6 +119,9 @@
       },
       "drupal/gin": {
         "Missing config schema": "https://www.drupal.org/files/issues/2022-05-09/missing_config_schema_3279472.patch"
+      },
+      "drupal/symfony_mailer": {
+        "Database update issue" : "https://www.drupal.org/files/issues/2023-05-02/symfony_mailer-3355235-db_update_error_plugin_does_not_exist-9.patch"
       }
     }
   }
