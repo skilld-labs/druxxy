@@ -99,7 +99,8 @@
         "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch"
       },
       "drupal/focal_point": {
-        "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch"
+        "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch",
+        "Error: Call to a member function isNew() on null in focal_point_entity_update()": "https://www.drupal.org/files/issues/2021-03-18/fix-error-call-a-member-is-new-on-null-3105826-11.patch"
       },
       "drupal/formblock": {
         "Feature: Node edit form block": "https://www.drupal.org/files/issues/2020-12-07/formblock-node_edit_form-3090910-5.patch",
