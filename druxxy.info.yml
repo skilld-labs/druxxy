@@ -22,7 +22,6 @@ dependencies:
   - custom_pub
   - datetime
   - datetime_range
-  - dblog
   - dynamic_page_cache
   - editor
   - field
