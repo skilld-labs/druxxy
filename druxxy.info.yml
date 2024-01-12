@@ -11,7 +11,7 @@ dependencies:
   - block_content
   - block_content_permissions
   - breakpoint
-  - ckeditor
+  - ckeditor5
   - coffee
   - color
   - config
