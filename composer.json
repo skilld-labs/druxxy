@@ -31,6 +31,7 @@
     "drupal/layout_library": "^1.0@beta",
     "drupal/layout_paragraphs": "^2.0",
     "drupal/lb_ux": "1.x@dev",
+    "drupal/log_stdout": "^1.5",
     "drupal/manage_display": "^2.0@beta",
     "drupal/menu_admin_per_menu": "^1.1",
     "drupal/menu_link_attributes": "^1.1",
