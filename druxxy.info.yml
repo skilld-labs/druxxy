@@ -45,6 +45,7 @@ dependencies:
   - layout_paragraphs
   - link
   - locale
+  - log_stdout
   - manage_display
   - media
   - media_library
