@@ -19,7 +19,7 @@
     "drupal/block_content_permissions": "^1.11",
     "drupal/coffee": "^1.3",
     "drupal/config_override_warn": "^1.4",
-    "drupal/core-recommended": "^10.2.0",
+    "drupal/core-recommended": "^10.3",
     "drupal/custom_pub": "^1.0",
     "drupal/file_entity": "dev-2.x",
     "drupal/focal_point": "^2.0",
@@ -89,7 +89,7 @@
       "drupal/core": {
         "Fix multilingual site's layout edit context issue": "https://www.drupal.org/files/issues/2019-12-19/3101231-19.patch",
         "Callers of LayoutEntityHelperTrait::getEntitySections() do not account for the view mode": "https://www.drupal.org/files/issues/2022-12-15/3008924-42.patch",
-        "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2023-02-08/2942975-230.patch",
+        "Expose Layout Builder data to REST and JSON:API": "https://www.drupal.org/files/issues/2024-06-21/2942975-262-reroll.patch",
         "Taxonomy pages crash with layout_builder enabled": "https://www.drupal.org/files/issues/2018-09-19/2959132-taxo-17-PASS.patch",
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
       },
