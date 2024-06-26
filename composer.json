@@ -114,6 +114,9 @@
       "drupal/menu_link_attributes": {
         "Add missing schema for menu_link_attributes": "https://patch-diff.githubusercontent.com/raw/yannickoo/menu_link_attributes/pull/52.patch"
       },
+      "drupal/page_manager": {
+        "upgrade conditions dgo.to/3398407": "https://git.drupalcode.org/project/page_manager/-/commit/19c3df8c7b168958965abc46fe34b08f2b7cc038.diff"
+      },
       "drupal/userprotect": {
         "Call to a member function grantPermission() on null in userprotect_install()": "https://www.drupal.org/files/issues/2023-07-28/3349663-8.patch"
       },
