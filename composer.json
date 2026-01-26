@@ -24,7 +24,7 @@
     "drupal/file_entity": "dev-2.x",
     "drupal/focal_point": "^2.0",
     "drupal/formblock": "^2.0@beta",
-    "drupal/gin": "^4.0",  
+    "drupal/gin": "^4.0",
     "drupal/google_tag": "^2.0",
     "drupal/layout_builder_modal": "^1.1",
     "drupal/layout_builder_restrictions": "^2.7",
@@ -113,7 +113,7 @@
       },
       "drupal/menu_link_attributes": {
         "Add missing schema for menu_link_attributes": "https://patch-diff.githubusercontent.com/raw/yannickoo/menu_link_attributes/pull/52.patch"
-      },
+      }
     }
   }
 }
