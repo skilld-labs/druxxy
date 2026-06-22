@@ -3,6 +3,7 @@
 # runtime files — config/, patches/, *.info.yml, *.profile, composer.json,
 # README, LICENSE — are intentionally NOT ignored and ship in the package.
 /.github            export-ignore
+/docs               export-ignore
 /.gitattributes     export-ignore
 /.gitignore         export-ignore
 /CLAUDE.md          export-ignore

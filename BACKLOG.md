@@ -24,18 +24,19 @@ just verify and close on GitHub.
 
 ## 1. Drupal 11 readiness (epic)
 
-The headline upgrade. Currently pinned to `drupal/core-recommended: ^10.6`.
+The headline upgrade (current release targets D10.6). **Exploration done on the `2.x` branch** — D11
+is achievable; the verified dependency change-set, the lenient + URL-patch approach, and the
+remaining blockers are written up in [`docs/upgrading-d11.md`](docs/upgrading-d11.md). PR **#61 is
+obsolete** (superseded by the `2.x` exploration).
 
-- 🟡 **[#58 / PR #61] Prepare to 11.0 core** — draft branch `58-up-for-11` exists
-  (`+294/-209`, touches `composer.json`, editor/filter formats, media image field,
-  imagemagick/log_stdout settings, `druxxy.info.yml`). Currently a stub. Blockers to work
-  through:
+- 🟡 **[#58] Prepare to 11 core** — the tracking epic. Exploration done on the `2.x` branch
+  (write-up in [`docs/upgrading-d11.md`](docs/upgrading-d11.md)); the old `58-up-for-11` stub
+  (PR #61) is **closed/superseded**. Remaining work to ship `v2.0.0`:
   - Symfony 7 + Drush 13 compatibility.
   - Deprecated/removed core modules (Forum, Tracker, Action, Book, Statistics, Tour) —
     confirm none are pulled in transitively.
-  - Per-dependency D11 compatibility audit (see §2) — this is the real bulk of the work.
+  - Per-dependency D11 compatibility audit (see §2) — the real bulk; mostly mapped in the doc.
   - PHPUnit 11 if/when a test suite is added.
-  - **Do not merge PR #61 as-is** — rebuild it on top of a green per-module audit.
 
 ## 2. Dependency & patch hygiene (prerequisite for D11)
 
@@ -91,5 +92,5 @@ The repo has **no CI, no lint config, no tests**. To make upgrades safe and repe
   the matrix (more PHP/core versions, D11) as upgrade work proceeds.
 - 🔴 Add config validation / coding standards (`drupal/coder` + phpcs on `*.profile` and
   YAML lint) so contributions stay consistent.
-- 🔴 Decide a supported-core policy and document it (which core minors the `1.x` branch
-  targets; whether D11 gets a new branch like `2.x`).
+- ✅ Supported-branch policy decided: `1.x` = Drupal 10 (maintained for existing projects),
+  `2.x` = Drupal 11 (new major). Documented in `README.md` + `docs/upgrading-d11.md`.
