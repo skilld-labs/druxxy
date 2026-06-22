@@ -27,9 +27,18 @@ with a working page-building stack and sensible security defaults out of the box
   Sophron image toolkit.
 - **Multilingual** — language config import at install time, adapted from `multilingual_demo`.
 
+## Versions
+
+Two release lines are maintained in parallel — pick the one matching your Drupal core:
+
+| Branch | Drupal | Require | Status |
+|---|---|---|---|
+| `1.x` | Drupal 10 (`^10.6`) | `composer require skilldlabs/druxxy:^1.0` | stable, maintained |
+| `2.x` | Drupal 11 | `composer require skilldlabs/druxxy:^2.0` | in progress — see [`docs/upgrading-d11.md`](docs/upgrading-d11.md) |
+
 ## Requirements
 
-- Drupal core `^10.6` (installed via Composer; pulled in by this profile).
+- A supported Drupal core for your chosen line (see the table above), installed via Composer.
 - PHP and extensions per the targeted Drupal core release.
 - Composer 2, with the `composer/installers` and `cweagans/composer-patches` plugins allowed
   (the profile applies several core/contrib patches — see `composer.json` → `extra.patches`).
