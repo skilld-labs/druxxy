@@ -104,12 +104,6 @@ jobs:
         working-directory: drupal
         run: composer require "skilldlabs/druxxy:dev-2.x" "drush/drush:^13" --with-all-dependencies --no-interaction
 
-      - name: Re-apply core patches
-        working-directory: drupal
-        # core-recommended is pulled in by the drupal-lenient pre-install, before the
-        # profile's patches are known, so its patches get skipped. Reinstall to apply them.
-        run: composer reinstall drupal/core --no-interaction
-
       - name: Resolve database URL
         id: db
         run: |
