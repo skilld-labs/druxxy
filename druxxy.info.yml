@@ -13,7 +13,6 @@ dependencies:
   - breakpoint
   - ckeditor5
   - coffee
-  - color
   - config
   - config_override_warn
   - config_translation
