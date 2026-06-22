@@ -101,11 +101,7 @@
         "Error: Call to a member function isNew() on null in focal_point_entity_update()": "https://www.drupal.org/files/issues/2021-03-18/fix-error-call-a-member-is-new-on-null-3105826-11.patch"
       },
       "drupal/formblock": {
-        "Feature: Node edit form block": "https://www.drupal.org/files/issues/2020-12-07/formblock-node_edit_form-3090910-5.patch",
-        "Missing config schema for blocks": "https://www.drupal.org/files/issues/2020-12-30/missing_config_schema_blocks-3073274-2816415-3090910-4.patch",
-        "User edit form": "https://www.drupal.org/files/issues/2022-08-17/user_edit_form-2915442-3073274-15.patch",
-        "Integrate with Profile": "https://git.drupalcode.org/project/formblock/-/merge_requests/2.diff",
-        "Profile block config schema": "https://www.drupal.org/files/issues/2023-01-18/missing_config_schema_blocks-3073274-3323373.patch"
+        "Node & user edit form blocks, config schema and profile integration (consolidated for formblock 2.0.0-beta4)": "patches/formblock-2.0.0-beta4.patch"
       },
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",

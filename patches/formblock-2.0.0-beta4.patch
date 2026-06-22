@@ -1,0 +1,715 @@
+diff --git a/config/schema/formblock.schema.yml b/config/schema/formblock.schema.yml
+new file mode 100644
+index 0000000..ce77543
+--- /dev/null
++++ b/config/schema/formblock.schema.yml
+@@ -0,0 +1,69 @@
++block.settings.formblock_contact:
++  type: block_settings
++  label: 'Site-wide contact form'
++  mapping:
++    contact_form:
++      type: string
++      label: 'Category'
++
++block.settings.formblock_node:
++  type: block_settings
++  label: 'Content form'
++  mapping:
++    type:
++      type: string
++      label: 'Node type'
++    form_mode:
++      type: string
++      label: 'Form mode'
++    show_help:
++      type: boolean
++      label: 'Show submission guidelines'
++
++block.settings.formblock_node_edit:
++  type: block_settings
++  label: 'Content edit form'
++  mapping:
++    type:
++      type: string
++      label: 'Node type'
++    form_mode:
++      type: string
++      label: 'Form mode'
++    show_help:
++      type: boolean
++      label: 'Show submission guidelines'
++
++block.settings.formblock_user_password:
++  type: block_settings
++  label: 'Request new password form'
++
++block.settings.formblock_user_register:
++  type: block_settings
++  label: 'User registration form'
++  mapping:
++    form_mode:
++      type: string
++      label: 'Form mode'
++
++block.settings.formblock_user_edit:
++  type: block_settings
++  label: 'User edit form'
++  mapping:
++    form_mode:
++      type: string
++      label: 'Form mode'
++
++block.settings.formblock_profile:
++  type: block_settings
++  label: 'Profile form'
++  mapping:
++    type:
++      type: string
++      label: 'Profile type'
++    form_mode:
++      type: string
++      label: 'Form mode'
++    show_help:
++      type: boolean
++      label: 'Show submission guidelines'
+diff --git a/formblock.module b/formblock.module
+index 4aa18c3..886d883 100644
+--- a/formblock.module
++++ b/formblock.module
+@@ -10,9 +10,9 @@
+  */
+ function formblock_entity_type_alter(array &$entity_types) {
+ 
+-  // Add a form class for node and user form mode.
++  // Add a form class for node, user and profile form mode.
+   // Until https://www.drupal.org/project/formblock/issues/2492285 go fixed.
+-  $types = ['node', 'user'];
++  $types = ['node', 'user', 'profile'];
+ 
+   foreach ($types as $key) {
+     if (isset($entity_types[$key])) {
+diff --git a/src/Plugin/Block/NodeEditFormBlock.php b/src/Plugin/Block/NodeEditFormBlock.php
+new file mode 100644
+index 0000000..e4d53cd
+--- /dev/null
++++ b/src/Plugin/Block/NodeEditFormBlock.php
+@@ -0,0 +1,215 @@
++<?php
++
++namespace Drupal\formblock\Plugin\Block;
++
++use Drupal\Core\Block\BlockBase;
++use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Component\Utility\Xss;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\node\Entity\NodeType;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\Entity\EntityFormBuilderInterface;
++use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
++
++/**
++ * Provides a block for node forms.
++ *
++ * @Block(
++ *   id = "formblock_node_edit",
++ *   admin_label = @Translation("Content edit form"),
++ *   provider = "node",
++ *   category = @Translation("Forms"),
++ *   context_definitions = {
++ *     "node" = @ContextDefinition("entity:node")
++ *   }
++ * )
++ *
++ * Note that we set module to node so that blocks will be disabled correctly
++ * when the module is disabled.
++ */
++class NodeEditFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * The entity manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The entity form builder.
++   *
++   * @var \Drupal\Core\Entity\EntityFormBuilderInterface.
++   */
++  protected $entityFormBuilder;
++
++  /**
++   * The entity display repository.
++   *
++   * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
++   */
++  protected $entityDisplayRepository;
++
++  /**
++   * Constructs a new NodeFormBlock plugin.
++   *
++   * @param array $configuration
++   *   A configuration array containing information about the plugin instance.
++   * @param string $plugin_id
++   *   The plugin_id for the plugin instance.
++   * @param mixed $plugin_definition
++   *   The plugin implementation definition.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
++   *   The entity manager.
++   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entityFormBuilder
++   *   The entity form builder.
++   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
++   *   The entity display repository.
++   */
++  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, EntityFormBuilderInterface $entityFormBuilder, EntityDisplayRepositoryInterface $entity_display_repository) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++    $this->setConfiguration($configuration);
++
++    $this->entityTypeManager = $entityTypeManager;
++    $this->entityFormBuilder = $entityFormBuilder;
++    $this->entityDisplayRepository = $entity_display_repository;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $configuration,
++      $plugin_id,
++      $plugin_definition,
++      $container->get('entity_type.manager'),
++      $container->get('entity.form_builder'),
++      $container->get('entity_display.repository')
++    );
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::settings().
++   */
++  public function defaultConfiguration() {
++    return [
++      'type' => NULL,
++      'form_mode' => 'default',
++      'show_help' => FALSE,
++    ];
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockForm().
++   */
++  public function blockForm($form, FormStateInterface $form_state) {
++    $form['formblock_node_type'] = [
++      '#title' => $this->t('Node type'),
++      '#description' => $this->t('Select the node type whose form will be shown in the block.'),
++      '#type' => 'select',
++      '#required' => TRUE,
++      '#options' => $this->getNodeTypes(),
++      '#default_value' => $this->configuration['type'],
++    ];
++    $form['formblock_node_form_mode'] = [
++      '#title' => $this->t('Form mode'),
++      '#description' => $this->t('Select the form mode that will be shown in the block.'),
++      '#type' => 'select',
++      '#required' => TRUE,
++      '#options' => $this->getFormModes(),
++      '#default_value' => $this->configuration['form_mode'],
++    ];
++    $form['formblock_show_help'] = [
++      '#type' => 'checkbox',
++      '#title' => $this->t('Show submission guidelines'),
++      '#default_value' => $this->configuration['show_help'],
++      '#description' => $this->t('Enable this option to show the submission guidelines in the block above the form.'),
++    ];
++
++    return $form;
++  }
++
++  /**
++   * Get an array of node types.
++   *
++   * @return array
++   *   An array of node types keyed by machine name.
++   */
++  protected function getNodeTypes() {
++    $options = [];
++    $types = $this->entityTypeManager->getStorage('node_type')->loadMultiple();
++    foreach ($types as $type) {
++      $options[$type->id()] = $type->label();
++    }
++    return $options;
++  }
++
++  /**
++   * Get an array of node form modes.
++   *
++   * @return array
++   *   An array of form modes keyed by machine name.
++   */
++  protected function getFormModes() {
++    $options = [
++      'default' => $this->t('Default'),
++    ];
++
++    foreach ($this->entityDisplayRepository->getFormModes('node') as $index => $mode) {
++      $options[$index] = $mode['label'];
++    }
++
++    return $options;
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockSubmit().
++   */
++  public function blockSubmit($form, FormStateInterface $form_state) {
++    $this->configuration['type'] = $form_state->getValue('formblock_node_type');
++    $this->configuration['form_mode'] = $form_state->getValue('formblock_node_form_mode');
++    $this->configuration['show_help'] = $form_state->getValue('formblock_show_help');
++  }
++
++  /**
++   * Implements \Drupal\block\BlockBase::build().
++   */
++  public function build() {
++    $build = [];
++
++    $node_type = NodeType::load($this->configuration['type']);
++
++    if ($this->configuration['show_help']) {
++      $build['help'] = ['#markup' => !empty($node_type->getHelp()) ? '<p>' . Xss::filterAdmin($node_type->getHelp()) . '</p>' : ''];
++    }
++
++    $node = $this->getContextValue('node');
++
++    $build['form'] = $this->entityFormBuilder->getForm($node, $this->configuration['form_mode']);
++
++    return $build;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function blockAccess(AccountInterface $account) {
++    $access_control_handler = $this->entityTypeManager->getAccessControlHandler('node');
++
++    // NodeAccessControlHandler::createAccess() adds user.permissions
++    // as a cache context to the returned AccessResult.
++    /* @var $result \Drupal\Core\Access\AccessResult */
++    $node = $this->getContextValue('node');
++    $result = $access_control_handler->access($node, 'update',  $account, TRUE);
++
++    // Add the node type as a cache dependency.
++    $node_type = $node_type = NodeType::load($this->configuration['type']);
++    $result->addCacheTags($node_type->getCacheTags());
++
++    return $result;
++  }
++
++}
+diff --git a/src/Plugin/Block/ProfileFormBlock.php b/src/Plugin/Block/ProfileFormBlock.php
+new file mode 100644
+index 0000000..40c629a
+--- /dev/null
++++ b/src/Plugin/Block/ProfileFormBlock.php
+@@ -0,0 +1,223 @@
++<?php
++
++namespace Drupal\formblock\Plugin\Block;
++
++use Drupal\Core\Block\BlockBase;
++use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Component\Utility\Xss;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\profile\Entity\ProfileType;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Drupal\Core\Entity\EntityFormBuilderInterface;
++use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
++
++/**
++ * Provides a block for profile forms.
++ *
++ * @Block(
++ *   id = "formblock_profile",
++ *   admin_label = @Translation("Profile form"),
++ *   provider = "profile",
++ *   category = @Translation("Forms"),
++ *   context_definitions = {
++ *      "user" = @ContextDefinition("entity:user")
++ *   }
++ * )
++ *
++ * Note that we set module to profile so that blocks will be disabled correctly
++ * when the module is disabled.
++ */
++class ProfileFormBlock extends BlockBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * The entity manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The entity form builder.
++   *
++   * @var \Drupal\Core\Entity\EntityFormBuilderInterface
++   */
++  protected $entityFormBuilder;
++
++  /**
++   * The entity display repository.
++   *
++   * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
++   */
++  protected $entityDisplayRepository;
++
++  /**
++   * Constructs a new ProfileFormBlock plugin.
++   *
++   * @param array $configuration
++   *   A configuration array containing information about the plugin instance.
++   * @param string $plugin_id
++   *   The plugin_id for the plugin instance.
++   * @param mixed $plugin_definition
++   *   The plugin implementation definition.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
++   *   The entity manager.
++   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entityFormBuilder
++   *   The entity form builder.
++   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
++   *   The Entity Display Repository.
++   */
++  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entityTypeManager, EntityFormBuilderInterface $entityFormBuilder, EntityDisplayRepositoryInterface $entity_display_repository) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++    $this->setConfiguration($configuration);
++
++    $this->entityTypeManager = $entityTypeManager;
++    $this->entityFormBuilder = $entityFormBuilder;
++    $this->entityDisplayRepository = $entity_display_repository;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $configuration,
++      $plugin_id,
++      $plugin_definition,
++      $container->get('entity_type.manager'),
++      $container->get('entity.form_builder'),
++      $container->get('entity_display.repository')
++    );
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::settings().
++   */
++  public function defaultConfiguration() {
++    return [
++      'type' => NULL,
++      'form_mode' => 'default',
++      'show_help' => FALSE,
++    ];
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockForm().
++   */
++  public function blockForm($form, FormStateInterface $form_state) {
++    $form['formblock_profile_type'] = [
++      '#title' => $this->t('Profile type'),
++      '#description' => $this->t('Select the profile type whose form will be shown in the block.'),
++      '#type' => 'select',
++      '#required' => TRUE,
++      '#options' => $this->getProfileTypes(),
++      '#default_value' => $this->configuration['type'],
++    ];
++    $form['formblock_profile_form_mode'] = [
++      '#title' => $this->t('Form mode'),
++      '#description' => $this->t('Select the form view mode that will be shown in the block.'),
++      '#type' => 'select',
++      '#required' => TRUE,
++      '#options' => $this->getFormModes(),
++      '#default_value' => $this->configuration['form_mode'],
++    ];
++    $form['formblock_show_help'] = [
++      '#type' => 'checkbox',
++      '#title' => $this->t('Show submission guidelines'),
++      '#default_value' => $this->configuration['show_help'],
++      '#description' => $this->t('Enable this option to show the submission guidelines in the block above the form.'),
++    ];
++
++    return $form;
++  }
++
++  /**
++   * Get an array of profile types.
++   *
++   * @return array
++   *   An array of profile types keyed by machine name.
++   */
++  protected function getProfileTypes() {
++    $options = [];
++    $types = $this->entityTypeManager->getStorage('profile_type')->loadMultiple();
++    foreach ($types as $type) {
++      $options[$type->id()] = $type->label();
++    }
++    return $options;
++  }
++
++  /**
++   * Get an array of profile form modes.
++   *
++   * @return array
++   *   An array of form modes keyed by machine name.
++   */
++  protected function getFormModes() {
++    $options = [
++      'default' => $this->t('Default'),
++    ];
++
++    foreach ($this->entityDisplayRepository->getFormModes('profile') as $index => $mode) {
++      $options[$index] = $mode['label'];
++    }
++
++    return $options;
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockSubmit().
++   */
++  public function blockSubmit($form, FormStateInterface $form_state) {
++    $this->configuration['type'] = $form_state->getValue('formblock_profile_type');
++    $this->configuration['form_mode'] = $form_state->getValue('formblock_profile_form_mode');
++    $this->configuration['show_help'] = $form_state->getValue('formblock_show_help');
++  }
++
++  /**
++   * Implements \Drupal\block\BlockBase::build().
++   */
++  public function build() {
++    $build = [];
++
++    $profile_type = ProfileType::load($this->configuration['type']);
++
++    if ($this->configuration['show_help']) {
++      $build['help'] = ['#markup' => !empty($profile_type->getHelp()) ? '<p>' . Xss::filterAdmin($profile_type->getHelp()) . '</p>' : ''];
++    }
++
++    $user = $this->getContextValue('user');
++
++    $profile_storage = $this->entityTypeManager->getStorage('profile');
++    $profile = $profile_storage->loadByUser($user, $profile_type->id());
++
++    if (!$profile) {
++      $profile = $profile_storage->create([
++        'type' => $profile_type->id(),
++      ]);
++    }
++
++    $build['form'] = $this->entityFormBuilder->getForm($profile, $this->configuration['form_mode']);
++
++    return $build;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function blockAccess(AccountInterface $account) {
++    $access_control_handler = $this->entityTypeManager->getAccessControlHandler('profile');
++
++    // ProfileAccessControlHandler::createAccess() adds user.permissions
++    // as a cache context to the returned AccessResult.
++    /* @var $result \Drupal\Core\Access\AccessResult */
++    $result = $access_control_handler->createAccess($this->configuration['type'], $account, [], TRUE);
++
++    // Add the profile type as a cache dependency.
++    $profile_type = $profile_type = ProfileType::load($this->configuration['type']);
++    $result->addCacheTags($profile_type->getCacheTags());
++
++    return $result;
++  }
++
++}
+diff --git a/src/Plugin/Block/UserEditBlock.php b/src/Plugin/Block/UserEditBlock.php
+new file mode 100644
+index 0000000..d507483
+--- /dev/null
++++ b/src/Plugin/Block/UserEditBlock.php
+@@ -0,0 +1,168 @@
++<?php
++
++namespace Drupal\formblock\Plugin\Block;
++
++use Drupal\Core\Block\BlockBase;
++use Drupal\Core\Entity\EntityDisplayRepositoryInterface;
++use Drupal\Core\Form\FormStateInterface;
++use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
++use Drupal\Core\Entity\EntityFormBuilderInterface;
++use Drupal\Core\Session\AccountInterface;
++use Drupal\Core\Entity\EntityTypeManagerInterface;
++use Symfony\Component\DependencyInjection\ContainerInterface;
++
++/**
++ * Provides a block for the user registration form.
++ *
++ * @Block(
++ *   id = "formblock_user_edit",
++ *   admin_label = @Translation("User edit form"),
++ *   provider = "user",
++ *   category = @Translation("Forms"),
++ *   context_definitions = {
++ *     "user" = @ContextDefinition("entity:user")
++ *   }
++ * )
++ *
++ * Note that we set module to contact so that blocks will be disabled correctly
++ * when the module is disabled.
++ */
++class UserEditBlock extends BlockBase implements ContainerFactoryPluginInterface {
++
++  /**
++   * @var \Drupal\Core\Entity\EntityFormBuilderInterface
++   */
++  protected $entityFormBuilder;
++
++  /**
++   * The entity manager.
++   *
++   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
++   */
++  protected $entityTypeManager;
++
++  /**
++   * The entity display repository.
++   *
++   * @var \Drupal\Core\Entity\EntityDisplayRepositoryInterface
++   */
++  protected $entityDisplayRepository;
++
++  /**
++   * Constructs a new UserEditBlock plugin.
++   *
++   * @param array $configuration
++   *   A configuration array containing information about the plugin instance.
++   * @param string $plugin_id
++   *   The plugin_id for the plugin instance.
++   * @param mixed $plugin_definition
++   *   The plugin implementation definition.
++   * @param \Drupal\Core\Entity\EntityFormBuilderInterface $entity_form_builder
++   *   The entity manager.
++   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
++   *   The entity manager.
++   * @param \Drupal\Core\Entity\EntityDisplayRepositoryInterface $entity_display_repository
++   *   The Entity Display Repository.
++   */
++  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityFormBuilderInterface $entity_form_builder, EntityTypeManagerInterface $entityTypeManager, EntityDisplayRepositoryInterface $entity_display_repository) {
++    parent::__construct($configuration, $plugin_id, $plugin_definition);
++
++    $this->entityFormBuilder = $entity_form_builder;
++    $this->entityTypeManager = $entityTypeManager;
++    $this->entityDisplayRepository = $entity_display_repository;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
++    return new static(
++      $configuration,
++      $plugin_id,
++      $plugin_definition,
++      $container->get('entity.form_builder'),
++      $container->get('entity_type.manager'),
++      $container->get('entity_display.repository')
++    );
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::settings().
++   */
++  public function defaultConfiguration() {
++    return [
++      'form_mode' => 'default',
++    ];
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockForm().
++   */
++  public function blockForm($form, FormStateInterface $form_state) {
++    $form['formblock_user_form_mode'] = [
++      '#title' => $this->t('Form mode'),
++      '#description' => $this->t('Select the form view mode that will be shown in the block.'),
++      '#type' => 'select',
++      '#required' => TRUE,
++      '#options' => $this->getFormModes(),
++      '#default_value' => $this->configuration['form_mode'],
++    ];
++    return $form;
++  }
++
++  /**
++   * Get an array of node form modes.
++   *
++   * @return array
++   *   An array of form modes keyed by machine name.
++   */
++  protected function getFormModes() {
++    $options = [
++      'default' => $this->t('Default'),
++    ];
++
++    foreach ($this->entityDisplayRepository->getFormModes('user') as $index => $mode) {
++      $options[$index] = $mode['label'];
++    }
++
++    return $options;
++  }
++
++  /**
++   * Overrides \Drupal\block\BlockBase::blockSubmit().
++   */
++  public function blockSubmit($form, FormStateInterface $form_state) {
++    $this->configuration['form_mode'] = $form_state->getValue('formblock_user_form_mode');
++  }
++
++  /**
++   * Implements \Drupal\block\BlockBase::build().
++   */
++  public function build() {
++    $build = [];
++    $user = $this->getContextValue('user');
++    if ($user) {
++      $account = $this->entityTypeManager->getStorage('user')->load($user->id());
++      if ($account) {
++        $build['form'] = $this->entityFormBuilder->getForm($account, $this->configuration['form_mode']);
++      }
++    }
++
++    return $build;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function blockAccess(AccountInterface $account) {
++    $access_control_handler = $this->entityTypeManager->getAccessControlHandler('user');
++    // NodeAccessControlHandler::createAccess() adds user.permissions
++    // as a cache context to the returned AccessResult.
++    /* @var $result \Drupal\Core\Access\AccessResult */
++    $user = $this->getContextValue('user');
++    $result = $access_control_handler->access($user, 'update',  $account, TRUE);
++
++    return $result;
++  }
++
++}
