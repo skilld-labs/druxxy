@@ -2,7 +2,7 @@ name: Test
 
 on:
   push:
-    branches: [1.x]
+    branches: [1.x, 2.x]
   pull_request:
 
 permissions:
@@ -43,8 +43,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { php: '8.3', drupal: '10.6', db: sqlite }
-          - { php: '8.3', drupal: '10.6', db: pgsql }
+          - { php: '8.3', drupal: '11', db: sqlite }
+          - { php: '8.3', drupal: '11', db: pgsql }
     # Postgres is only consumed by the pgsql matrix leg; it's harmless for the sqlite leg.
     services:
       postgres:
@@ -86,17 +86,23 @@ jobs:
           composer config minimum-stability dev
           composer config prefer-stable true
           composer config allow-plugins.cweagans/composer-patches true
-          # The profile's patches live in a dependency, so the root project must opt in to
-          # apply them — and fail the build if any patch does not apply. This is what makes
-          # the smoke test genuinely validate the (load-bearing) patch set.
+          composer config allow-plugins.mglaman/composer-drupal-lenient true
+          # Apply the profile's (dependency) patches in CI.
           composer config --json extra.enable-patching true
-          composer config --json extra.composer-exit-on-patch-failure true
+          # EXPLORATION ONLY: collect ALL patch failures in one run instead of aborting on
+          # the first. MUST be flipped back to true before any D11 release.
+          composer config --json extra.composer-exit-on-patch-failure false
+          # drupal-lenient: relax the drupal/core constraint for the 3 modules without a D11
+          # release yet (made D11-ready via the MR patches in the profile's composer.json).
+          composer require mglaman/composer-drupal-lenient
+          composer config --json --merge extra.drupal-lenient.allowed-list \
+            '["drupal/lb_ux", "drupal/big_pipe_sessionless", "drupal/block_content_permissions"]'
           composer config repositories.druxxy \
-            '{"type": "path", "url": "../druxxy", "options": {"symlink": true, "versions": {"skilldlabs/druxxy": "dev-1.x"}}}'
+            '{"type": "path", "url": "../druxxy", "options": {"symlink": true, "versions": {"skilldlabs/druxxy": "dev-2.x"}}}'
 
       - name: Require profile and Drush
         working-directory: drupal
-        run: composer require "skilldlabs/druxxy:dev-1.x" "drush/drush:^13 || ^12" --with-all-dependencies --no-interaction
+        run: composer require "skilldlabs/druxxy:dev-2.x" "drush/drush:^13" --with-all-dependencies --no-interaction
 
       - name: Resolve database URL
         id: db

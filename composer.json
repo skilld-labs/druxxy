@@ -19,7 +19,7 @@
     "drupal/block_content_permissions": "^1.11",
     "drupal/coffee": "^1.3",
     "drupal/config_override_warn": "^1.4",
-    "drupal/core-recommended": "^10.6",
+    "drupal/core-recommended": "^11",
     "drupal/custom_pub": "^1.0",
     "drupal/file_entity": "dev-2.x",
     "drupal/file_mdm": "^3.1",
@@ -27,7 +27,7 @@
     "drupal/formblock": "^2.0@beta",
     "drupal/gin": "^4.0",
     "drupal/google_tag": "^2.0",
-    "drupal/imagemagick": "^3.7",
+    "drupal/imagemagick": "^5.0",
     "drupal/layout_builder_modal": "^1.1",
     "drupal/layout_builder_restrictions": "^2.7",
     "drupal/layout_library": "^1.0@beta",
@@ -49,7 +49,7 @@
     "drupal/remove_http_headers": "^1.0 || ^2.0",
     "drupal/role_delegation": "^1.5",
     "drupal/seckit": "^2.0",
-    "drupal/sophron": "^2.0",
+    "drupal/sophron": "^3.0",
     "drupal/svg_image": "^3.2",
     "drupal/symfony_mailer": "^1.6",
     "drupal/telephone_validation": "^2.4",
@@ -58,7 +58,7 @@
     "drupal/userprotect": "^1.3",
     "drupal/views_bulk_edit": "^3",
     "drupal/views_bulk_operations": "^4.2",
-    "drupal/webform": "^6.1"
+    "drupal/webform": "^6.3"
   },
   "conflict": {
     "drupal/drupal": "*"
@@ -97,7 +97,11 @@
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
       },
       "drupal/block_content_permissions": {
-        "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch"
+        "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch",
+        "Drupal 11 compatibility (issue 3555336, MR!9)": "https://git.drupalcode.org/project/block_content_permissions/-/merge_requests/9.diff"
+      },
+      "drupal/big_pipe_sessionless": {
+        "Drupal 11 compatibility (issue 3428235, MR!11)": "https://git.drupalcode.org/project/big_pipe_sessionless/-/merge_requests/11.diff"
       },
       "drupal/focal_point": {
         "Integrate focal point with media_library": "https://www.drupal.org/files/issues/2019-12-11/focal_point-compatibility-with-media-libary-3094478-2.patch",
@@ -112,7 +116,8 @@
       },
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
-        "Errors when using with modules that alter a section's contextual menu": "https://www.drupal.org/files/issues/2020-05-22/3106939-4.patch"
+        "Errors when using with modules that alter a section's contextual menu": "https://www.drupal.org/files/issues/2020-05-22/3106939-4.patch",
+        "Drupal 11 compatibility (issue 3464547, MR!3)": "https://git.drupalcode.org/project/lb_ux/-/merge_requests/3.diff"
       },
       "drupal/menu_link_attributes": {
         "Add missing schema for menu_link_attributes": "https://patch-diff.githubusercontent.com/raw/yannickoo/menu_link_attributes/pull/52.patch"
