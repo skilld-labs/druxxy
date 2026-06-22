@@ -1,0 +1,124 @@
+name: Test
+
+on:
+  push:
+    branches: [1.x]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate & lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+
+      - name: Validate composer.json
+        run: composer validate --strict --no-check-all
+
+      - name: Lint PHP files
+        run: |
+          find . -path ./vendor -prune -o \
+            \( -name '*.php' -o -name '*.profile' -o -name '*.module' -o -name '*.install' -o -name '*.theme' \) \
+            -print0 | xargs -0 -n1 -P4 php -l
+
+  install:
+    name: Install (Drupal ${{ matrix.drupal }}, PHP ${{ matrix.php }}, ${{ matrix.db }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: '8.3', drupal: '10.6', db: sqlite }
+          - { php: '8.3', drupal: '10.6', db: pgsql }
+    # Postgres is only consumed by the pgsql matrix leg; it's harmless for the sqlite leg.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: drupal
+          POSTGRES_PASSWORD: drupal
+          POSTGRES_DB: drupal
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout profile
+        uses: actions/checkout@v4
+        with:
+          path: druxxy
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, pdo_sqlite, sqlite3, pdo_pgsql, pgsql, mbstring, dom, xml
+          ini-values: memory_limit=-1
+          coverage: none
+          tools: composer:v2
+
+      - name: Create Drupal project
+        run: |
+          composer create-project "drupal/recommended-project:^${{ matrix.drupal }}" drupal \
+            --no-interaction --no-install
+
+      - name: Configure project to use the local profile
+        working-directory: drupal
+        run: |
+          composer config minimum-stability dev
+          composer config prefer-stable true
+          composer config allow-plugins.cweagans/composer-patches true
+          # The profile's patches live in a dependency, so the root project must opt in to
+          # apply them — and fail the build if any patch does not apply. This is what makes
+          # the smoke test genuinely validate the (load-bearing) patch set.
+          composer config --json extra.enable-patching true
+          composer config --json extra.composer-exit-on-patch-failure true
+          composer config repositories.druxxy \
+            '{"type": "path", "url": "../druxxy", "options": {"symlink": true, "versions": {"skilldlabs/druxxy": "dev-1.x"}}}'
+
+      - name: Require profile and Drush
+        working-directory: drupal
+        run: composer require "skilldlabs/druxxy:dev-1.x" "drush/drush:^13 || ^12" --with-all-dependencies --no-interaction
+
+      - name: Resolve database URL
+        id: db
+        run: |
+          if [ "${{ matrix.db }}" = "pgsql" ]; then
+            echo "url=pgsql://drupal:drupal@127.0.0.1:5432/drupal" >> "$GITHUB_OUTPUT"
+          else
+            echo "url=sqlite://localhost/sites/default/files/.ht.sqlite" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install site
+        working-directory: drupal
+        run: |
+          vendor/bin/drush site:install druxxy \
+            --db-url="${{ steps.db.outputs.url }}" \
+            --account-name=admin --account-pass=admin \
+            --site-name="Druxxy CI" --yes
+
+      - name: Verify install
+        working-directory: drupal
+        run: |
+          vendor/bin/drush status --fields=bootstrap,db-status
+          # Fail loudly if the site did not actually bootstrap (guards against
+          # a no-op "success" like running drush through php by mistake).
+          test "$(vendor/bin/drush status --field=bootstrap)" = "Successful"
