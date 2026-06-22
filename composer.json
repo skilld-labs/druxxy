@@ -97,7 +97,6 @@
         "Add multilingual support for caching basefield definitions": "https://www.drupal.org/files/issues/2022-02-27/3114824-9.patch"
       },
       "drupal/block_content_permissions": {
-        "Allow accessing the Custom block library page without Administer blocks permission": "https://www.drupal.org/files/issues/2020-06-05/block_content_permissions-access_listing_page-2920739-31.patch",
         "Drupal 11 compatibility (issue 3555336, MR!9)": "https://git.drupalcode.org/project/block_content_permissions/-/merge_requests/9.diff"
       },
       "drupal/big_pipe_sessionless": {
@@ -117,7 +116,7 @@
       "drupal/lb_ux": {
         "Cog icon not showing when Preview disabled": "https://www.drupal.org/files/issues/2020-05-22/3116402-8.patch",
         "Errors when using with modules that alter a section's contextual menu": "https://www.drupal.org/files/issues/2020-05-22/3106939-4.patch",
-        "Drupal 11 compatibility (issue 3464547, MR!3)": "https://git.drupalcode.org/project/lb_ux/-/merge_requests/3.diff"
+        "Drupal 11 compatibility (issue 3464547, commit before the composer.json one)": "https://git.drupalcode.org/project/lb_ux/-/commit/55a8b5e8.diff"
       },
       "drupal/menu_link_attributes": {
         "Add missing schema for menu_link_attributes": "https://patch-diff.githubusercontent.com/raw/yannickoo/menu_link_attributes/pull/52.patch"
