@@ -52,3 +52,4 @@ image_formats:
   ICO:
     mime_type: image/vnd.microsoft.icon
     enabled: false
+imagemagick_version: v6

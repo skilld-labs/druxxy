@@ -27,7 +27,7 @@
     "drupal/formblock": "^2.0@beta",
     "drupal/gin": "^4.0",
     "drupal/google_tag": "^2.0",
-    "drupal/imagemagick": "^3.7",
+    "drupal/imagemagick": "^4.0",
     "drupal/layout_builder_modal": "^1.1",
     "drupal/layout_builder_restrictions": "^2.7",
     "drupal/layout_library": "^1.0@beta",
